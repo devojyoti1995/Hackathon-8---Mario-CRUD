@@ -44,28 +44,47 @@ app.post("/mario",async(req,res)=>{
     }
 })
 
-app.patch("mario/:id", async (req,res)=>{
-    const id = req.params.id;
-    const newMario = req.body;
-    try{
-        const data = await marioModel.findById(id);
-        if(isNullOrUndefined(newMario.name) || isNullOrUndefined(newMario.weight)){
-            res.status(400).send({message: "both name and weight is missing"});
-        }else{
-            if(!isNullOrUndefined(newMario.name)){
-                data.name=newMario.name;
-            }
-            if(!isNullOrUndefined(newMario.weight)){
-                data.weight=Number(newMario.weight);
-            }
-            await data.save();
-            res.send(data);
-        }
-    }catch(err){
-        res.status(400).send({message:err.message})
+// app.patch("mario/:id", async (req,res)=>{
+//     const id = req.params.id;
+//     const newMario = req.body;
+//     try{
+//         const data = await marioModel.findById(id);
+//         if(isNullOrUndefined(newMario.name) || isNullOrUndefined(newMario.weight)){
+//             res.status(400).send({message: "both name and weight is missing"});
+//         }else{
+//             if(!isNullOrUndefined(newMario.name)){
+//                 data.name=newMario.name;
+//             }
+//             if(!isNullOrUndefined(newMario.weight)){
+//                 data.weight=Number(newMario.weight);
+//             }
+//             await data.save();
+//             res.send(data);
+//         }
+//     }catch(err){
+//         res.status(400).send({message:err.message})
+//     }
+// })
+
+
+app.patch('/mario/:id', async (req, res) => {
+    try {
+        const mario = await marioModel.findOne({ _id: req.params.id });
+
+        if(mario === null)
+            res.status(400).send({ message: "Id not found" });
+        else {
+            if(req.body.name)
+                mario.name = req.body.name;
+            if(req.body.weight)
+                mario.weight = Number(req.body.weight)
+            await mario.save();    
+            res.send(mario);        
+        }    
+    } catch(err) {
+        res.status(400).send({ message: err.message });
     }
 })
-
 
 app.delete("/mario/:id",async (req,res)=>{
     const id = req.params.id;

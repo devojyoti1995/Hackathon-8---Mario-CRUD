@@ -44,12 +44,12 @@ app.post("/mario",async(req,res)=>{
     }
 })
 
-app.patch("mario/:id", async(req,res)=>{
+app.patch("mario/:id", async (req,res)=>{
     const id = req.params.id;
     const newMario = req.body;
     try{
         const data = await marioModel.findById(id);
-        if(isNullOrUndefined(newMario.name) && isNullOrUndefined(newMario.weight)){
+        if(isNullOrUndefined(newMario.name) || isNullOrUndefined(newMario.weight)){
             res.status(400).send({message: "both name and weight is missing"});
         }else{
             if(!isNullOrUndefined(newMario.name)){

@@ -59,6 +59,7 @@ app.patch("mario/:id", async(req,res)=>{
                 data.weight=newMario.weight;
             }
             await data.save();
+            res.send(data);
         }
     }catch(err){
         res.status(400).send({message:err.message})

@@ -56,7 +56,7 @@ app.patch("mario/:id", async (req,res)=>{
                 data.name=newMario.name;
             }
             if(!isNullOrUndefined(newMario.weight)){
-                data.weight=newMario.weight;
+                data.weight=Number(newMario.weight);
             }
             await data.save();
             res.send(data);

@@ -32,7 +32,7 @@ app.get("/mario/:id",async(req,res)=>{
     }
 })
 
-const isNullOrUndefined = (val) => val===null && val===undefined
+const isNullOrUndefined = (val) => val===null || val===undefined
 app.post("/mario",async(req,res)=>{
     const newMario = req.body;
     if(isNullOrUndefined(newMario.name) || isNullOrUndefined(newMario.weight)){
